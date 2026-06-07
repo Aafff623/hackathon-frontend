@@ -119,6 +119,14 @@ Mkdirs：
 - 用于参考目录结构、Vercel 部署、开源模板完整度
 - 不引入 Sanity/Auth/Stripe/Resend 到 AgentCFO MVP
 
+## 当前工程状态
+
+- Next.js 基础工程已可运行（Plan B 手动初始化，pnpm）
+- next 16 / react 19 / tailwindcss v4
+- 可用脚本：`pnpm dev` / `pnpm build` / `pnpm start` / `pnpm typecheck`
+- 仍处于 Mock-first 阶段，未安装 HeroUI Pro，未接真实 API / CAW
+- 详见 `ai/memory/07-Next初始化状态.md`
+
 ## 版本与日期
 
 - 初始化日期：2026-06-07

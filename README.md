@@ -4,14 +4,26 @@
 
 ## 当前状态
 
-**当前仓库处于 frontend workspace initialization 阶段。**
+**Next.js 基础工程已可运行（Plan B 手动初始化完成）。**
 
 - 工程骨架已初始化
 - Mock 数据已就绪
 - Handoff 文档已就绪
-- **尚未初始化 Next.js**
-- **尚无 package.json**
-- **暂不可直接 `npm install` / `npm run dev`**
+- Next.js + TypeScript + Tailwind CSS v4 基础配置已完成，可启动 / 类型检查 / 构建
+- 当前仍处于 Mock-first / Handoff-first 阶段
+- 尚未接入真实后端 API
+- 尚未接入真实 Cobo Agentic Wallet
+- 尚未安装 HeroUI Pro
+
+## 运行方式
+
+```bash
+pnpm install     # 安装依赖
+pnpm dev         # 启动开发服务器（http://localhost:3000）
+pnpm typecheck   # TypeScript 类型检查（tsc --noEmit）
+pnpm build       # 生产构建
+pnpm start       # 启动生产服务器
+```
 
 ## 核心 Demo 流程
 
@@ -28,14 +40,14 @@
 
 ## 技术栈
 
-- Next.js + React + TypeScript + Tailwind CSS
-- HeroUI v3 / HeroUI Pro
-- Aceternity UI（选择性组件）
+- Next.js (App Router) + React + TypeScript + Tailwind CSS v4
+- HeroUI v3 / HeroUI Pro（尚未安装）
+- Aceternity UI（选择性组件，尚未安装）
 
 ## 项目结构
 
 ```txt
-app/            Next.js 路由
+app/            Next.js 路由（layout.tsx, globals.css, page.tsx, demo/）
 components/     业务组件（按业务域拆分）
 lib/            非 UI 逻辑（api / mock / workflow / constants）
 docs/           设计、架构、规范
@@ -47,20 +59,19 @@ public/         静态资源
 
 ## 环境变量
 
-复制 `.env.example` 为 `.env.local` 并填写真实值。
+复制 `.env.example` 为 `.env.local` 并填写真实值（`.env.example` 仅含占位符）。
 
 ## 状态
 
 - [x] 工程骨架初始化
-- [ ] 工具链安装（待确认）
+- [x] Next.js / TypeScript / Tailwind v4 基础配置（可运行）
+- [ ] 工具链安装：HeroUI Pro / Aceternity（待确认）
 - [ ] Mock-first Demo Console（待实现）
 - [ ] UI 视觉落地（待实现）
 - [ ] 后端 API 联调（待确认）
 
 ## 下一步
 
-1. review Codex 修复结果
-2. 初始化 Git
-3. 确认 Next.js + pnpm + Tailwind
-4. 初始化可运行项目（注意：当前已有 `app/page.tsx` 和 `app/demo/page.tsx` 占位，初始化时避免直接覆盖）
-5. 进入 Mock-first Demo Console 实现
+1. 确认是否安装 HeroUI Pro（hpsetup，需 HEROUI_KEY）
+2. 沉淀 DESIGN.md，确定视觉方向
+3. 进入 Mock-first Demo Console 实现
