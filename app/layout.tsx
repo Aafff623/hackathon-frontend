@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AgentCFO",
-  description: "AI CFO demo console for DAO treasury payouts",
+  title: "AgentCFO — AI Treasury Command Center",
+  description: "AI CFO demo console for DAO treasury payouts. From contribution records to risk-checked payment plans, human approval, simulated wallet execution, and audit reports.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="min-h-screen bg-slate-950 text-slate-50 antialiased">
+        {children}
+      </body>
     </html>
   );
 }

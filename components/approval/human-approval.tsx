@@ -16,29 +16,30 @@ export function HumanApproval({ plan, riskResult }: HumanApprovalProps) {
   );
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+    <section className="relative overflow-hidden rounded-xl border border-white/10 bg-slate-900/60 backdrop-blur-sm p-5">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+      <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
         Human Approval
       </h2>
-      <p className="mt-2 text-xs text-slate-500">
+      <p className="mt-1 text-[11px] text-slate-500">
         AgentCFO will not execute payouts without explicit human approval. Blocked items cannot proceed.
       </p>
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 space-y-2">
         {approvedItems.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3"
+            className="flex items-center justify-between rounded-lg border border-emerald-500/15 bg-emerald-500/5 px-4 py-3"
           >
             <div>
-              <p className="text-sm font-medium text-emerald-900">{item.recipient.name}</p>
-              <p className="text-xs text-emerald-700">{item.description}</p>
+              <p className="text-sm font-medium text-emerald-300">{item.recipient.name}</p>
+              <p className="text-[11px] text-emerald-400/70">{item.description}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm font-semibold text-emerald-900">
+              <p className="text-sm font-semibold text-emerald-300">
                 {item.amount} {item.token}
               </p>
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700">
+              <span className="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-400">
                 <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     fillRule="evenodd"
@@ -55,17 +56,17 @@ export function HumanApproval({ plan, riskResult }: HumanApprovalProps) {
         {blockedItems.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between rounded-lg border border-red-200 bg-red-50 px-4 py-3"
+            className="flex items-center justify-between rounded-lg border border-red-500/15 bg-red-500/5 px-4 py-3"
           >
             <div>
-              <p className="text-sm font-medium text-red-900">{item.recipient.name}</p>
-              <p className="text-xs text-red-700">{item.description}</p>
+              <p className="text-sm font-medium text-red-300">{item.recipient.name}</p>
+              <p className="text-[11px] text-red-400/70">{item.description}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm font-semibold text-red-900">
+              <p className="text-sm font-semibold text-red-300">
                 {item.amount} {item.token}
               </p>
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700">
+              <span className="inline-flex items-center gap-1 text-[10px] font-medium text-red-400">
                 <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     fillRule="evenodd"
@@ -80,8 +81,8 @@ export function HumanApproval({ plan, riskResult }: HumanApprovalProps) {
         ))}
       </div>
 
-      <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3">
-        <p className="text-xs text-blue-800">
+      <div className="mt-4 rounded-lg border border-blue-500/15 bg-blue-500/5 px-4 py-3">
+        <p className="text-[11px] text-blue-300">
           <span className="font-semibold">Policy enforced:</span> All payouts require human approval.
           Blocked items (whitelist failure) are automatically rejected and cannot be approved.
         </p>
