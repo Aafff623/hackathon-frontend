@@ -17,7 +17,7 @@ export default function DemoPage() {
         <RiskGate result={demoData.riskResult} />
         <HumanApproval plan={demoData.paymentPlan} riskResult={demoData.riskResult} />
         <ExecutionResult executions={demoData.executions} />
-        <AuditReport report={demoData.auditReport} />
+        <AuditReport report={demoData.auditReport} plan={demoData.paymentPlan} />
       </div>
     </DemoShell>
   );

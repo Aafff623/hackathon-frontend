@@ -1,13 +1,21 @@
 import type { AuditReport } from "@/lib/api/types";
+import type { PaymentPlan } from "@/lib/api/types";
 
 interface AuditReportProps {
   report: AuditReport;
+  plan: PaymentPlan;
 }
 
-export function AuditReport({ report }: AuditReportProps) {
+export function AuditReport({ report, plan }: AuditReportProps) {
   const approvedCount = report.transactions.length;
   const totalExecuted = report.transactions.reduce((sum, t) => sum + t.amount, 0);
-  const blockedAmount = 15;
+
+  const blockedWallets = report.riskCheck.checks.whitelistCheck.blockedWallets ?? [];
+  const blockedItems = plan.items.filter((item) =>
+    blockedWallets.includes(item.recipient.walletAddress)
+  );
+  const blockedCount = blockedItems.length;
+  const blockedAmount = blockedItems.reduce((sum, item) => sum + item.amount, 0);
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -39,11 +47,11 @@ export function AuditReport({ report }: AuditReportProps) {
             <p className="mt-0.5 text-xs font-medium uppercase tracking-wider text-slate-500">Approved</p>
           </div>
           <div className="rounded-lg border border-slate-100 bg-white px-3 py-3 text-center shadow-sm">
-            <p className="text-xl font-bold text-red-700">1</p>
+            <p className="text-xl font-bold text-red-700">{blockedCount}</p>
             <p className="mt-0.5 text-xs font-medium uppercase tracking-wider text-slate-500">Blocked</p>
           </div>
           <div className="rounded-lg border border-slate-100 bg-white px-3 py-3 text-center shadow-sm">
-            <p className="text-xl font-bold text-slate-900">{totalExecuted + blockedAmount}</p>
+            <p className="text-xl font-bold text-slate-900">{plan.totalAmount}</p>
             <p className="mt-0.5 text-xs font-medium uppercase tracking-wider text-slate-500">Planned (USDC)</p>
           </div>
           <div className="rounded-lg border border-slate-100 bg-white px-3 py-3 text-center shadow-sm">
@@ -78,7 +86,7 @@ export function AuditReport({ report }: AuditReportProps) {
             <div>
               <p className="text-sm font-semibold text-red-900">Risk Summary</p>
               <p className="mt-0.5 text-xs leading-relaxed text-red-700">
-                Whitelist check blocked 1 recipient. {report.riskCheck.checks.whitelistCheck.reason}.
+                Whitelist check blocked {blockedCount} recipient{blockedCount > 1 ? "s" : ""}. {report.riskCheck.checks.whitelistCheck.reason}.
                 Blocked amount: {blockedAmount} USDC. No funds were transferred for blocked items.
               </p>
             </div>

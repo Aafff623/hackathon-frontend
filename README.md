@@ -74,7 +74,7 @@ pnpm start       # Start production server
 | Mock data & workflow | ✅ Done |
 | Real backend API | ❌ Not implemented |
 | Real CAW execution | ❌ Not implemented |
-| Vercel deployment | ⏳ Pending |
+| Vercel deployment | ✅ Done |
 | README demo orientation | ✅ Done |
 
 ## Safety Notes
