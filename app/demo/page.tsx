@@ -6,21 +6,18 @@ import { HumanApproval } from "@/components/approval/human-approval";
 import { ExecutionResult } from "@/components/execution/execution-result";
 import { AuditReport } from "@/components/audit/audit-report";
 
-import { mockPaymentPlan } from "@/lib/mock/payment-plan";
-import { mockRiskCheckResult } from "@/lib/mock/risk-check";
-import { mockCAWExecutions } from "@/lib/mock/caw-execution";
-import { mockAuditReport } from "@/lib/mock/audit-report";
+import { demoData } from "@/lib/demo/demo-data";
 
 export default function DemoPage() {
   return (
     <DemoShell>
       <div className="space-y-8">
-        <WorkflowTimeline riskResult={mockRiskCheckResult} />
-        <PaymentPlanBoard plan={mockPaymentPlan} riskResult={mockRiskCheckResult} />
-        <RiskGate result={mockRiskCheckResult} />
-        <HumanApproval plan={mockPaymentPlan} riskResult={mockRiskCheckResult} />
-        <ExecutionResult executions={mockCAWExecutions} />
-        <AuditReport report={mockAuditReport} />
+        <WorkflowTimeline riskResult={demoData.riskResult} />
+        <PaymentPlanBoard plan={demoData.paymentPlan} riskResult={demoData.riskResult} />
+        <RiskGate result={demoData.riskResult} />
+        <HumanApproval plan={demoData.paymentPlan} riskResult={demoData.riskResult} />
+        <ExecutionResult executions={demoData.executions} />
+        <AuditReport report={demoData.auditReport} />
       </div>
     </DemoShell>
   );

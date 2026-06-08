@@ -7,23 +7,22 @@ interface PaymentPlanProps {
 }
 
 function getItemStatus(
-  itemId: string,
+  walletAddress: string,
   riskResult: RiskCheckResult
 ): { label: string; style: string } {
   const blockedWallets = riskResult.checks.whitelistCheck.blockedWallets ?? [];
-  // Check if this item's recipient wallet is in blocked list
-  if (itemId === "item-2") {
-    // Bob is the blocked one per mock data
+  if (blockedWallets.includes(walletAddress)) {
     return { label: "Blocked", style: "bg-red-50 text-red-700 border-red-200" };
   }
   return { label: "Approved", style: "bg-emerald-50 text-emerald-700 border-emerald-200" };
 }
 
 function getRiskLevel(
-  itemId: string,
+  walletAddress: string,
   riskResult: RiskCheckResult
 ): { label: string; style: string } {
-  if (itemId === "item-2") {
+  const blockedWallets = riskResult.checks.whitelistCheck.blockedWallets ?? [];
+  if (blockedWallets.includes(walletAddress)) {
     return { label: "High", style: "bg-red-50 text-red-700" };
   }
   return { label: "Low", style: "bg-slate-100 text-slate-600" };
@@ -51,8 +50,8 @@ export function PaymentPlanBoard({ plan, riskResult }: PaymentPlanProps) {
 
       <div className="mt-6 space-y-3">
         {plan.items.map((item) => {
-          const status = getItemStatus(item.id, riskResult);
-          const risk = getRiskLevel(item.id, riskResult);
+          const status = getItemStatus(item.recipient.walletAddress, riskResult);
+          const risk = getRiskLevel(item.recipient.walletAddress, riskResult);
           return (
             <div
               key={item.id}
