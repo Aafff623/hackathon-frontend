@@ -1,78 +1,82 @@
-# AgentCFO｜DAO AI 财务官
+# AgentCFO / DAO AI 财务官
 
-面向 Web3 小团队 / DAO 的 AI 财务官 Demo Console。
+AgentCFO is an AI CFO for Web3 small teams and DAOs. It turns contribution records and treasury rules into risk-checked payout plans, human-approved execution, and auditable settlement reports.
 
-## 当前状态
+## Demo
 
-**Demo Console v0 已完成。**
+- **Local demo route:** [`/demo`](http://localhost:3000/demo)
+- **Deployment link:** 待补充
+- **Demo status:** mock-only frontend demo
+- **Real transaction status:** no real blockchain transaction yet
 
-- 工程骨架已初始化
-- Mock 数据已就绪
-- Handoff 文档已就绪
-- Next.js + TypeScript + Tailwind CSS v4 基础配置已完成，可启动 / 类型检查 / 构建
-- **Demo Console v0 已实现**（`/demo` 页面展示 AgentCFO 核心闭环）
-- 当前仍处于 Mock-first / Handoff-first 阶段
-- 尚未接入真实后端 API
-- 尚未接入真实 Cobo Agentic Wallet
-- 尚未安装 HeroUI Pro
+## What the demo shows
 
-## 运行方式
+1. **Payment Plan Generation** — consolidate contributor payouts and subscription bills into a single settlement plan
+2. **Risk Gate** — automatically check budget, whitelist, single-payment limit, and duplicate payment policy
+3. **Human Approval** — require explicit human approval before any payout execution; blocked items are rejected
+4. **Simulated Cobo Agentic Wallet Execution** — mock execution showing Agent Wallet, permission boundary, and transaction hash (simulated on Base Sepolia testnet)
+5. **Settlement Receipt / Audit Report** — formal audit summary with approved count, blocked count, risk summary, and execution summary
+
+## Mock / Real Boundary
+
+| Layer | Status | Note |
+|---|---|---|
+| Frontend UI | ✅ Implemented | Demo Console v0 with 6 core sections |
+| Mock Data | ✅ Ready | 3 contributors + 1 subscription; Bob blocked by whitelist |
+| Payment Plan Logic | ✅ Mock | Generated from static mock data |
+| Risk Gate Logic | ✅ Mock | Policy checks against static rules |
+| Human Approval Flow | ✅ Mock | Static approved / blocked states |
+| CAW Execution | ⚠️ Simulated | **No real Cobo Agentic Wallet call**; tx hashes are mock |
+| Blockchain Transaction | ❌ None | **No real on-chain transaction occurred** |
+| Backend API | ❌ Not connected | `lib/api/*` adapters are placeholders |
+
+UI has reserved display slots for Agent Wallet address, permission boundary, tx hash, and audit report. These can be wired to real Cobo Agentic Wallet / testnet execution in subsequent iterations.
+
+## Sponsor Track Fit — Cobo
+
+- **Agentic treasury payout:** AgentCFO autonomously analyzes payment requests and generates payout plans
+- **Permission boundary:** Budget limit, single-payment cap, token whitelist, and recipient whitelist are enforced before execution
+- **Human-in-the-loop:** Risk-checked plans require explicit human approval — no autonomous fund transfer
+- **Auditability:** Every decision (risk check, approval, execution) is recorded in a settlement receipt
+- **Agent Wallet execution path:** UI demonstrates how a Cobo Agentic Wallet would execute approved payouts under policy constraints
+- **Future real CAW integration:** `lib/api/caw.ts` adapter is pre-structured for real Cobo Agentic Wallet API calls
+
+## Local Development
 
 ```bash
-pnpm install     # 安装依赖
-pnpm dev         # 启动开发服务器（http://localhost:3000）
-pnpm typecheck   # TypeScript 类型检查（tsc --noEmit）
-pnpm build       # 生产构建
-pnpm start       # 启动生产服务器
+pnpm install
+pnpm dev
+# open http://localhost:3000/demo
 ```
 
-## 核心 Demo 流程
+Other commands:
 
-```txt
-贡献记录 / 订阅账单输入
-→ AgentCFO 解析任务
-→ 生成 Payment Plan
-→ Risk Check：预算 / 白名单 / 单笔限额 / 重复付款
-→ Human Approval
-→ Cobo Agentic Wallet 执行付款
-→ 展示 tx hash / Agent Wallet / Payment Status
-→ 生成 Audit Report
+```bash
+pnpm typecheck   # TypeScript type check
+pnpm build       # Production build
+pnpm start       # Start production server
 ```
 
-## 技术栈
+## Current Tech Stack
 
-- Next.js (App Router) + React + TypeScript + Tailwind CSS v4
-- HeroUI v3 / HeroUI Pro（尚未安装）
-- Aceternity UI（选择性组件，尚未安装）
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Mock-first frontend architecture
 
-## 项目结构
+## Project Status
 
-```txt
-app/            Next.js 路由（layout.tsx, globals.css, page.tsx, demo/）
-components/     业务组件（按业务域拆分）
-lib/            非 UI 逻辑（api / mock / workflow / constants）
-docs/           设计、架构、规范
-handoff/        给后端 / 合约 / 物料 / 路演的材料
-ai/             AI 记忆、Prompt、检查清单
-assets/         视觉参考、截图、Logo
-public/         静态资源
-```
+| Item | Status |
+|---|---|
+| Demo Console v0 | ✅ Done |
+| DESIGN.md | ✅ Done |
+| Mock data & workflow | ✅ Done |
+| Real backend API | ❌ Not implemented |
+| Real CAW execution | ❌ Not implemented |
+| Vercel deployment | ⏳ Pending |
+| README demo orientation | ✅ Done |
 
-## 环境变量
+## Safety Notes
 
-复制 `.env.example` 为 `.env.local` 并填写真实值（`.env.example` 仅含占位符）。
-
-## 状态
-
-- [x] 工程骨架初始化
-- [x] Next.js / TypeScript / Tailwind v4 基础配置（可运行）
-- [ ] 工具链安装：HeroUI Pro / Aceternity（待确认）
-- [ ] Mock-first Demo Console（待实现）
-- [ ] UI 视觉落地（待实现）
-- [ ] 后端 API 联调（待确认）
-
-## 下一步
-
-1. 确认是否安装 HeroUI Pro（hpsetup，需 HEROUI_KEY）
-2. 沉淀 DESIGN.md，确定视觉方向
-3. 进入 Mock-first Demo Console 实现
+This project is a **hackathon demo only**. No real funds, real wallets, or real blockchain transactions are involved. All execution results are simulated. Do not use for production treasury operations.
