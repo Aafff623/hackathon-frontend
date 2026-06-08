@@ -4,12 +4,13 @@
 
 ## 当前状态
 
-**Next.js 基础工程已可运行（Plan B 手动初始化完成）。**
+**Demo Console v0 已完成。**
 
 - 工程骨架已初始化
 - Mock 数据已就绪
 - Handoff 文档已就绪
 - Next.js + TypeScript + Tailwind CSS v4 基础配置已完成，可启动 / 类型检查 / 构建
+- **Demo Console v0 已实现**（`/demo` 页面展示 AgentCFO 核心闭环）
 - 当前仍处于 Mock-first / Handoff-first 阶段
 - 尚未接入真实后端 API
 - 尚未接入真实 Cobo Agentic Wallet
