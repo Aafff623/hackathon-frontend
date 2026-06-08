@@ -1,39 +1,11 @@
-import type { PaymentPlan } from "@/lib/api/types";
-import type { RiskCheckResult } from "@/lib/api/types";
+import { GlassPanel } from "@/components/ui/glass-panel";
+import { StatusPill } from "@/components/ui/status-pill";
+import { Wallet, ShieldAlert, ShieldCheck } from "lucide-react";
+import type { PaymentPlan, RiskCheckResult } from "@/lib/api/types";
 
 interface PaymentPlanProps {
   plan: PaymentPlan;
   riskResult: RiskCheckResult;
-}
-
-function getItemStatus(
-  walletAddress: string,
-  riskResult: RiskCheckResult
-): { label: string; style: string; borderStyle: string } {
-  const blockedWallets = riskResult.checks.whitelistCheck.blockedWallets ?? [];
-  if (blockedWallets.includes(walletAddress)) {
-    return {
-      label: "Blocked",
-      style: "bg-red-50 text-red-700 border-red-200",
-      borderStyle: "border-l-4 border-l-red-400",
-    };
-  }
-  return {
-    label: "Approved",
-    style: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    borderStyle: "border-l-4 border-l-emerald-400",
-  };
-}
-
-function getRiskLevel(
-  walletAddress: string,
-  riskResult: RiskCheckResult
-): { label: string; style: string } {
-  const blockedWallets = riskResult.checks.whitelistCheck.blockedWallets ?? [];
-  if (blockedWallets.includes(walletAddress)) {
-    return { label: "High", style: "bg-red-100 text-red-700" };
-  }
-  return { label: "Low", style: "bg-slate-100 text-slate-600" };
 }
 
 function truncateAddress(addr: string): string {
@@ -42,69 +14,95 @@ function truncateAddress(addr: string): string {
 }
 
 export function PaymentPlanBoard({ plan, riskResult }: PaymentPlanProps) {
-  const approvedItems = plan.items.filter((item) => {
-    const blockedWallets = riskResult.checks.whitelistCheck.blockedWallets ?? [];
-    return !blockedWallets.includes(item.recipient.walletAddress);
-  });
-  const blockedItems = plan.items.filter((item) => {
-    const blockedWallets = riskResult.checks.whitelistCheck.blockedWallets ?? [];
-    return blockedWallets.includes(item.recipient.walletAddress);
-  });
+  const blockedWallets = riskResult.checks.whitelistCheck.blockedWallets ?? [];
+
+  const approvedItems = plan.items.filter(
+    (item) => !blockedWallets.includes(item.recipient.walletAddress)
+  );
+  const blockedItems = plan.items.filter(
+    (item) => blockedWallets.includes(item.recipient.walletAddress)
+  );
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Payment Plan
-          </h2>
-          <p className="mt-1 text-xs text-slate-500">
-            {approvedItems.length} approved · {blockedItems.length} blocked · {plan.items.length} total
-          </p>
+    <GlassPanel accent="blue" className="p-0 overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
+            <Wallet className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="text-sm font-semibold text-white">Payment Plan</h2>
+            <p className="text-[11px] text-slate-500">
+              {approvedItems.length} approved · {blockedItems.length} blocked
+            </p>
+          </div>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold text-slate-900">
-            {plan.totalAmount} <span className="text-lg font-semibold text-slate-500">{plan.token}</span>
+          <p className="text-xl font-bold text-white font-mono-numbers">
+            {plan.totalAmount}
           </p>
+          <p className="text-[11px] text-slate-500">{plan.token}</p>
         </div>
       </div>
 
-      <div className="mt-6 space-y-3">
+      {/* Transaction Board */}
+      <div className="p-3 space-y-2">
         {plan.items.map((item) => {
-          const status = getItemStatus(item.recipient.walletAddress, riskResult);
-          const risk = getRiskLevel(item.recipient.walletAddress, riskResult);
+          const isBlocked = blockedWallets.includes(item.recipient.walletAddress);
+
           return (
             <div
               key={item.id}
-              className={`flex items-center justify-between rounded-lg border border-slate-100 bg-white px-4 py-3.5 shadow-sm ${status.borderStyle}`}
+              className={`flex items-center justify-between rounded-lg px-4 py-3 border ${
+                isBlocked
+                  ? "bg-red-500/[0.04] border-red-500/15"
+                  : "bg-white/[0.02] border-white/[0.04]"
+              }`}
             >
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-semibold text-slate-900">{item.recipient.name}</p>
-                  <span
-                    className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-semibold uppercase tracking-wide ${status.style}`}
-                  >
-                    {status.label}
-                  </span>
+              <div className="flex items-center gap-3 min-w-0">
+                <div
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+                    isBlocked
+                      ? "bg-red-500/10 text-red-400"
+                      : "bg-emerald-500/10 text-emerald-400"
+                  }`}
+                >
+                  {isBlocked ? (
+                    <ShieldAlert className="h-4 w-4" />
+                  ) : (
+                    <ShieldCheck className="h-4 w-4" />
+                  )}
                 </div>
-                <p className="mt-1 text-xs text-slate-500">
-                  {truncateAddress(item.recipient.walletAddress)} · {item.description}
-                </p>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium text-white truncate">
+                      {item.recipient.name}
+                    </p>
+                    {isBlocked ? (
+                      <StatusPill status="danger">Blocked</StatusPill>
+                    ) : (
+                      <StatusPill status="success">Approved</StatusPill>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-slate-500 font-mono-numbers">
+                    {truncateAddress(item.recipient.walletAddress)} · {item.description}
+                  </p>
+                </div>
               </div>
-              <div className="ml-4 text-right">
-                <p className="text-sm font-bold text-slate-900">
+              <div className="text-right shrink-0 ml-3">
+                <p
+                  className={`text-sm font-bold font-mono-numbers ${
+                    isBlocked ? "text-red-400" : "text-white"
+                  }`}
+                >
                   {item.amount} {item.token}
                 </p>
-                <span
-                  className={`inline-flex rounded px-1.5 py-0.5 text-xs font-medium ${risk.style}`}
-                >
-                  {risk.label} risk
-                </span>
               </div>
             </div>
           );
         })}
       </div>
-    </section>
+    </GlassPanel>
   );
 }

@@ -1,5 +1,7 @@
-import type { PaymentPlan } from "@/lib/api/types";
-import type { RiskCheckResult } from "@/lib/api/types";
+import { GlassPanel } from "@/components/ui/glass-panel";
+import { StatusPill } from "@/components/ui/status-pill";
+import { UserCheck, CheckCircle, XCircle, Info } from "lucide-react";
+import type { PaymentPlan, RiskCheckResult } from "@/lib/api/types";
 
 interface HumanApprovalProps {
   plan: PaymentPlan;
@@ -16,76 +18,78 @@ export function HumanApproval({ plan, riskResult }: HumanApprovalProps) {
   );
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-        Human Approval
-      </h2>
-      <p className="mt-2 text-xs text-slate-500">
-        AgentCFO will not execute payouts without explicit human approval. Blocked items cannot proceed.
-      </p>
+    <GlassPanel accent="emerald" className="p-0 overflow-hidden">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
+            <UserCheck className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="text-sm font-semibold text-white">Human Approval</h2>
+            <p className="text-[11px] text-slate-500">Required before execution</p>
+          </div>
+        </div>
+      </div>
 
-      <div className="mt-4 space-y-3">
+      <div className="p-3 space-y-2">
+        {/* Approved Queue */}
         {approvedItems.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3"
+            className="flex items-center justify-between rounded-lg border border-emerald-500/15 bg-emerald-500/[0.04] px-4 py-3"
           >
-            <div>
-              <p className="text-sm font-medium text-emerald-900">{item.recipient.name}</p>
-              <p className="text-xs text-emerald-700">{item.description}</p>
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
+                <CheckCircle className="h-3.5 w-3.5" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-emerald-300">{item.recipient.name}</p>
+                <p className="text-[11px] text-emerald-400/70">{item.description}</p>
+              </div>
             </div>
             <div className="text-right">
-              <p className="text-sm font-semibold text-emerald-900">
+              <p className="text-sm font-semibold text-emerald-300 font-mono-numbers">
                 {item.amount} {item.token}
               </p>
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700">
-                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Approved
-              </span>
+              <StatusPill status="success" className="mt-1">Approved</StatusPill>
             </div>
           </div>
         ))}
 
+        {/* Blocked Queue */}
         {blockedItems.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between rounded-lg border border-red-200 bg-red-50 px-4 py-3"
+            className="flex items-center justify-between rounded-lg border border-red-500/15 bg-red-500/[0.04] px-4 py-3"
           >
-            <div>
-              <p className="text-sm font-medium text-red-900">{item.recipient.name}</p>
-              <p className="text-xs text-red-700">{item.description}</p>
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/10 text-red-400">
+                <XCircle className="h-3.5 w-3.5" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-red-300">{item.recipient.name}</p>
+                <p className="text-[11px] text-red-400/70">{item.description}</p>
+              </div>
             </div>
             <div className="text-right">
-              <p className="text-sm font-semibold text-red-900">
+              <p className="text-sm font-semibold text-red-300 font-mono-numbers">
                 {item.amount} {item.token}
               </p>
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700">
-                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Blocked
-              </span>
+              <StatusPill status="danger" className="mt-1">Blocked</StatusPill>
             </div>
           </div>
         ))}
-      </div>
 
-      <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3">
-        <p className="text-xs text-blue-800">
-          <span className="font-semibold">Policy enforced:</span> All payouts require human approval.
-          Blocked items (whitelist failure) are automatically rejected and cannot be approved.
-        </p>
+        {/* Policy Note */}
+        <div className="flex items-start gap-2.5 rounded-lg border border-blue-500/15 bg-blue-500/[0.04] px-4 py-3">
+          <Info className="h-4 w-4 text-blue-400 shrink-0 mt-0.5" />
+          <p className="text-xs text-blue-300 leading-relaxed">
+            <span className="font-semibold">Policy enforced:</span> All payouts require human
+            approval. Blocked items (whitelist failure) are automatically rejected and cannot be
+            approved.
+          </p>
+        </div>
       </div>
-    </section>
+    </GlassPanel>
   );
 }

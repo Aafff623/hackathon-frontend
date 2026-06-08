@@ -1,3 +1,6 @@
+import { GlassPanel } from "@/components/ui/glass-panel";
+import { StatusPill } from "@/components/ui/status-pill";
+import { Shield, CheckCircle, XCircle } from "lucide-react";
 import type { RiskCheckResult } from "@/lib/api/types";
 
 interface RiskGateProps {
@@ -9,43 +12,36 @@ interface CheckItemProps {
   passed: boolean;
   reason?: string;
   warning?: string;
-  isFailed?: boolean;
 }
 
-function CheckItem({ name, passed, reason, warning, isFailed }: CheckItemProps) {
+function CheckItem({ name, passed, reason, warning }: CheckItemProps) {
   return (
     <div
-      className={`rounded-lg border px-4 py-3.5 ${
-        isFailed
-          ? "border-red-300 bg-red-50 shadow-sm"
-          : passed
-          ? "border-emerald-200 bg-emerald-50"
-          : "border-red-200 bg-red-50"
+      className={`rounded-xl border px-4 py-3.5 ${
+        passed
+          ? "border-emerald-500/15 bg-emerald-500/[0.04]"
+          : "border-red-500/15 bg-red-500/[0.04]"
       }`}
     >
-      <div className="flex items-center gap-2">
-        {passed ? (
-          <svg className="h-5 w-5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        ) : (
-          <svg className="h-5 w-5 text-red-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        )}
-        <span className={`text-sm font-semibold ${passed ? "text-emerald-900" : "text-red-900"}`}>
+      <div className="flex items-center gap-2.5">
+        <div
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
+            passed ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
+          }`}
+        >
+          {passed ? <CheckCircle className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
+        </div>
+        <span className={`text-sm font-semibold ${passed ? "text-emerald-300" : "text-red-300"}`}>
           {name}
         </span>
       </div>
       {reason && (
-        <p className={`mt-2 text-xs leading-relaxed ${passed ? "text-emerald-700" : "text-red-700"}`}>
+        <p className={`mt-2 text-xs leading-relaxed ${passed ? "text-emerald-400/70" : "text-red-400/70"}`}>
           {reason}
         </p>
       )}
       {warning && (
-        <p className="mt-2 text-xs font-semibold leading-relaxed text-red-800">
-          {warning}
-        </p>
+        <p className="mt-2 text-xs font-semibold text-red-300">{warning}</p>
       )}
     </div>
   );
@@ -56,36 +52,27 @@ export function RiskGate({ result }: RiskGateProps) {
   const failedChecks = Object.entries(checks).filter(([, c]) => !c.passed);
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Risk Gate
-          </h2>
-          <p className="mt-1 text-xs text-slate-500">
-            AI Agent verifies every payout against treasury policy
-          </p>
+    <GlassPanel accent="gold" className="p-0 overflow-hidden">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+            <Shield className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="text-sm font-semibold text-white">Risk Gate</h2>
+            <p className="text-[11px] text-slate-500">AI Agent policy enforcement</p>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          {result.passed ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
-              <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              All Clear
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700">
-              <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-              {failedChecks.length} check{failedChecks.length > 1 ? "s" : ""} failed
-            </span>
-          )}
-        </div>
+        {result.passed ? (
+          <StatusPill status="success">All Clear</StatusPill>
+        ) : (
+          <StatusPill status="danger">
+            {failedChecks.length} check{failedChecks.length > 1 ? "s" : ""} failed
+          </StatusPill>
+        )}
       </div>
 
-      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="p-3 space-y-2">
         <CheckItem
           name="Budget Check"
           passed={checks.budgetCheck.passed}
@@ -97,13 +84,12 @@ export function RiskGate({ result }: RiskGateProps) {
           reason={checks.whitelistCheck.reason}
           warning={
             checks.whitelistCheck.blockedWallets
-              ? `Blocked wallets: ${checks.whitelistCheck.blockedWallets.join(", ")}`
+              ? `Blocked: ${checks.whitelistCheck.blockedWallets.join(", ")}`
               : undefined
           }
-          isFailed={!checks.whitelistCheck.passed}
         />
         <CheckItem
-          name="Single-Payment Limit"
+          name="Payment Limit"
           passed={checks.limitCheck.passed}
           reason={checks.limitCheck.reason}
         />
@@ -113,6 +99,6 @@ export function RiskGate({ result }: RiskGateProps) {
           reason={checks.duplicateCheck.reason}
         />
       </div>
-    </section>
+    </GlassPanel>
   );
 }
