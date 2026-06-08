@@ -7,11 +7,13 @@ interface HumanApprovalProps {
 }
 
 export function HumanApproval({ plan, riskResult }: HumanApprovalProps) {
-  const approvedItems = plan.items.filter((item) => {
-    // Bob (item-2) is blocked
-    return item.id !== "item-2";
-  });
-  const blockedItems = plan.items.filter((item) => item.id === "item-2");
+  const blockedWallets = riskResult.checks.whitelistCheck.blockedWallets ?? [];
+  const approvedItems = plan.items.filter(
+    (item) => !blockedWallets.includes(item.recipient.walletAddress)
+  );
+  const blockedItems = plan.items.filter(
+    (item) => blockedWallets.includes(item.recipient.walletAddress)
+  );
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
