@@ -77,7 +77,7 @@ export function WorkflowTimeline({ riskResult }: WorkflowTimelineProps) {
                 </div>
                 <div className="mt-3 text-center">
                   <p className="text-sm font-medium text-slate-900">{step.title}</p>
-                  <p className="mt-0.5 text-[11px] leading-relaxed text-slate-500">{step.description}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{step.description}</p>
                 </div>
               </div>
             );

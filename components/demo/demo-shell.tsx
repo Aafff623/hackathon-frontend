@@ -17,7 +17,7 @@ export function DemoShell({ children }: { children: React.ReactNode }) {
                   <h1 className="text-xl font-semibold tracking-tight text-slate-900">
                     {PROJECT_NAME}
                   </h1>
-                  <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-blue-700">
+                  <span className="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-700">
                     Demo
                   </span>
                 </div>
@@ -27,7 +27,7 @@ export function DemoShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
             <div className="hidden text-right sm:block">
-              <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400">
+              <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
                 Mock Mode
               </p>
               <p className="text-xs text-slate-500">

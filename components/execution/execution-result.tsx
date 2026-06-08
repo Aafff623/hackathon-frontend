@@ -64,14 +64,14 @@ export function ExecutionResult({ executions }: ExecutionResultProps) {
 
         <div className="mt-4 flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
           <div>
-            <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400">Agent Wallet</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Agent Wallet</p>
             <p className="text-sm font-medium text-slate-700">
               {executions[0]?.agentWalletAddress?.slice(0, 10)}...
               {executions[0]?.agentWalletAddress?.slice(-6) ?? "N/A"}
             </p>
           </div>
           <div className="text-right">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400">Total Executed</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Total Executed</p>
             <p className="text-lg font-bold text-slate-900">{totalExecuted} USDC</p>
           </div>
         </div>

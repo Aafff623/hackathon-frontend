@@ -82,7 +82,7 @@ export function PaymentPlanBoard({ plan, riskResult }: PaymentPlanProps) {
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-semibold text-slate-900">{item.recipient.name}</p>
                   <span
-                    className={`inline-flex rounded-full border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${status.style}`}
+                    className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-semibold uppercase tracking-wide ${status.style}`}
                   >
                     {status.label}
                   </span>
@@ -96,7 +96,7 @@ export function PaymentPlanBoard({ plan, riskResult }: PaymentPlanProps) {
                   {item.amount} {item.token}
                 </p>
                 <span
-                  className={`inline-flex rounded px-1.5 py-0.5 text-[11px] font-medium ${risk.style}`}
+                  className={`inline-flex rounded px-1.5 py-0.5 text-xs font-medium ${risk.style}`}
                 >
                   {risk.label} risk
                 </span>
