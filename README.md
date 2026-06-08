@@ -5,7 +5,7 @@ AgentCFO is an AI CFO for Web3 small teams and DAOs. It turns contribution recor
 ## Demo
 
 - **Local demo route:** [`/demo`](http://localhost:3000/demo)
-- **Deployment link:** 待补充
+- **Live demo:** [https://hackathon-frontend-sigma.vercel.app](https://hackathon-frontend-sigma.vercel.app)
 - **Demo status:** mock-only frontend demo
 - **Real transaction status:** no real blockchain transaction yet
 
